@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { questions, Question } from "@/data/questions";
+import { questions } from "@/data/questions";
 
 export default function QuizPage() {
   const router = useRouter();
@@ -11,10 +11,9 @@ export default function QuizPage() {
   const [score, setScore] = useState(0);
 
   useEffect(() => {
-    // Hole die Wahl vom Startbildschirm
     const savedCategory = sessionStorage.getItem("category") as "kids" | "adults";
     if (!savedCategory) {
-      router.push("/"); // Zurück, falls jemand die Seite direkt aufruft
+      router.push("/");
       return;
     }
     setCategory(savedCategory);
@@ -26,53 +25,62 @@ export default function QuizPage() {
   const currentQuestion = currentQuestions[currentIndex];
 
   const handleAnswer = (selectedOption: string) => {
-    // Falls die Antwort richtig ist, Punkt zählen
-    if (selectedOption === currentQuestion.answer) {
-      setScore(prev => prev + 1);
-    }
-
-    // Nächste Frage oder zum Ziel
+    const isCorrect = selectedOption === currentQuestion.answer;
+    const newScore = isCorrect ? score + 1 : score;
+    
     if (currentIndex < currentQuestions.length - 1) {
+      setScore(newScore);
       setCurrentIndex(prev => prev + 1);
     } else {
-      // Endergebnis kurz speichern und weiter
-      sessionStorage.setItem("finalScore", (score + (selectedOption === currentQuestion.answer ? 1 : 0)).toString());
+      sessionStorage.setItem("finalScore", newScore.toString());
       router.push("/result");
     }
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen p-6">
-      {/* Fortschrittsanzeige */}
-      <div className="absolute top-10 left-0 w-full px-10">
-        <div className="flex justify-between mb-2 text-xs font-bold text-visa-blue uppercase tracking-widest">
-          <span>{category} Quiz</span>
-          <span>Question {currentIndex + 1} of {currentQuestions.length}</span>
-        </div>
-        <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-          <div 
-            className="bg-visa-gold h-full transition-all duration-300" 
-            style={{ width: `${((currentIndex + 1) / currentQuestions.length) * 100}%` }}
-          />
-        </div>
+    <main className="flex flex-col items-center min-h-screen bg-white">
+      {/* Header mit Logo */}
+      <div className="w-full flex justify-center py-6 border-b-[1px] border-gray-100">
+        <img src="/logo.png" alt="VISA" className="h-8 object-contain" />
       </div>
 
-      <div className="w-full max-w-2xl bg-white shadow-xl rounded-2xl p-8 border-t-8 border-visa-blue">
-        <h2 className="text-2xl font-bold text-visa-blue mb-8 text-center">
+      <div className="flex-1 flex flex-col items-center justify-center w-full max-w-2xl p-6">
+        {/* Fortschritt */}
+        <div className="w-full mb-12">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-2 text-center">
+            Question {currentIndex + 1} of {currentQuestions.length}
+          </p>
+          <div className="w-full bg-gray-100 h-[2px]">
+            <div 
+              className="bg-visa-blue h-full transition-all duration-500" 
+              style={{ width: `${((currentIndex + 1) / currentQuestions.length) * 100}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Frage */}
+        <h2 className="text-2xl font-light text-visa-blue mb-10 text-center leading-snug">
           {currentQuestion.text}
         </h2>
 
-        <div className="grid gap-4">
+        {/* Antworten */}
+        <div className="w-full space-y-3">
           {currentQuestion.options.map((option) => (
             <button
               key={option}
               onClick={() => handleAnswer(option)}
-              className="w-full p-5 text-lg font-medium border-2 border-gray-100 rounded-xl hover:border-visa-gold hover:bg-gray-50 transition-all text-left"
+              className="w-full p-5 text-left border-[1px] border-gray-200 rounded-sm hover:border-visa-blue hover:bg-gray-50 transition-all font-light text-visa-blue group flex justify-between items-center"
             >
-              {option}
+              <span>{option}</span>
+              <span className="opacity-0 group-hover:opacity-100 transition-opacity text-visa-blue">→</span>
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Footer */}
+      <div className="py-8 text-[10px] text-gray-400 uppercase tracking-[0.2em]">
+        {category} Category
       </div>
     </main>
   );
