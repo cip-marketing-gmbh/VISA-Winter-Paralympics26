@@ -12,17 +12,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Visa Button Style: Eckig mit minimaler Rundung, sehr flach */
+/* Falls du die Styles für Visa-Buttons schon hattest, füge sie hier an: */
 .visa-btn {
   @apply px-8 py-4 transition-all duration-200 active:scale-[0.98] disabled:cursor-not-allowed;
 }
 
-/* Quiz Card Effekt */
-.quiz-card {
-  @apply bg-white border border-gray-100 shadow-[0_10px_30px_rgba(0,0,0,0.05)] rounded-lg p-8;
-}
-
-/* Input Fokus Effekt */
 input:focus::placeholder {
   color: transparent;
 }
