@@ -47,7 +47,7 @@ export const questions: { kids: Question[]; adults: Question[] } = {
     },
     {
       id: 2,
-      text: "Was symbolisieren die drei „Agitos" im Paralympics-Logo?",
+      text: "Was symbolisieren die drei 'Agitos' im Paralympics-Logo?",
       options: ["Geist, Körper und Seele", "Die drei Kontinente", "Bewegung"],
       answer: "Geist, Körper und Seele",
     },
