@@ -7,18 +7,22 @@ export default function AdminPage() {
     { name: string; category: string; date?: string }[]
   >([]);
   const [winner, setWinner] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [password, setPassword] = useState("");
+  const [authed, setAuthed] = useState(false);
 
-  const loadData = async () => {
+  const loadData = async (pw: string) => {
+    setLoading(true);
+    setError(null);
     try {
-      const secret = process.env.NEXT_PUBLIC_ADMIN_SECRET ?? "";
       const res = await fetch("/api/admin/list", {
-        headers: { Authorization: `Bearer ${secret}` },
+        headers: { Authorization: `Bearer ${pw}` },
       });
 
       if (res.status === 401) {
-        setError("Nicht autorisiert – bitte NEXT_PUBLIC_ADMIN_SECRET prüfen.");
+        setError("Falsches Passwort.");
+        setAuthed(false);
         return;
       }
 
@@ -27,16 +31,13 @@ export default function AdminPage() {
         typeof p === "string" ? JSON.parse(p) : p
       );
       setParticipants(parsed);
+      setAuthed(true);
     } catch {
-      setError("Teilnehmerdaten konnten nicht geladen werden.");
+      setError("Verbindungsfehler.");
     } finally {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const drawWinner = () => {
     if (participants.length === 0) return;
@@ -44,8 +45,32 @@ export default function AdminPage() {
     setWinner(participants[randomIndex].name);
   };
 
-  if (loading) return <div className="p-10">Lade Teilnehmer...</div>;
-  if (error) return <div className="p-10 text-red-600 font-bold">{error}</div>;
+  // Login-Formular
+  if (!authed) {
+    return (
+      <main className="flex flex-col items-center justify-center min-h-screen bg-white p-8">
+        <h1 className="text-2xl font-bold text-visa-blue mb-8">Admin-Login</h1>
+        <div className="w-full max-w-sm space-y-4">
+          <input
+            type="password"
+            placeholder="Passwort"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && loadData(password)}
+            className="w-full border border-gray-300 rounded px-4 py-3 outline-none focus:border-visa-blue"
+          />
+          {error && <p className="text-red-600 text-sm">{error}</p>}
+          <button
+            onClick={() => loadData(password)}
+            disabled={loading || !password}
+            className="w-full bg-visa-blue text-white py-3 rounded font-medium hover:bg-[#040a2e] disabled:opacity-30"
+          >
+            {loading ? "Laden..." : "Einloggen"}
+          </button>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="p-10 max-w-4xl mx-auto">
@@ -91,7 +116,7 @@ export default function AdminPage() {
         </table>
       </div>
 
-      <button onClick={loadData} className="mt-6 text-sm text-visa-blue underline">
+      <button onClick={() => loadData(password)} className="mt-6 text-sm text-visa-blue underline">
         ↻ Aktualisieren
       </button>
     </main>
