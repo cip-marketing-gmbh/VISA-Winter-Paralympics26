@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 export default function ResultPage() {
@@ -8,7 +8,13 @@ export default function ResultPage() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
+  // Verhindert doppelten Submit (React Strict Mode feuert useEffect zweimal)
+  const submitted = useRef(false);
+
   useEffect(() => {
+    if (submitted.current) return;
+    submitted.current = true;
+
     const participantName = sessionStorage.getItem("participantName");
     const category = sessionStorage.getItem("category");
 
@@ -19,7 +25,6 @@ export default function ResultPage() {
 
     setName(participantName);
 
-    // Daten an die API senden
     fetch("/api/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -36,15 +41,15 @@ export default function ResultPage() {
       </div>
 
       <h1 className="text-4xl font-bold text-visa-blue mb-4">
-        Great job, {name}!
+        Toll gemacht, {name}!
       </h1>
       <p className="text-xl text-gray-600 mb-12">
-        Thank you for participating in the Paralympics Quiz.
+        Danke für deine Teilnahme am Paralympics-Quiz.
       </p>
 
       <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 max-w-md">
         <p className="text-sm text-gray-500">
-          You are now entered into the prize draw. We will pick a random winner at the end of the event!
+          Du nimmst jetzt an der Verlosung teil. Am Ende der Veranstaltung wird ein zufälliger Gewinner ausgelost!
         </p>
       </div>
 
@@ -55,7 +60,7 @@ export default function ResultPage() {
         }}
         className="mt-12 text-visa-blue font-bold border-b-2 border-visa-blue pb-1 hover:text-visa-gold hover:border-visa-gold transition-all"
       >
-        Back to Start
+        Zurück zum Start
       </button>
     </main>
   );
