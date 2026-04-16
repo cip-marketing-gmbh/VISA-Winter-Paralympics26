@@ -65,7 +65,7 @@ export const questions: { kids: Question[]; adults: Question[] } = {
     },
     {
       id: 5,
-      text: "Was ist das Hauptziel des „Klassifizierungs"-Systems bei den Paralympics?",
+      text: "Was ist das Hauptziel des 'Klassifizierungs'-Systems bei den Paralympics?",
       options: [
         "Altersgruppen trennen",
         "Fairer Wettkampf trotz unterschiedlicher Beeinträchtigungen",
