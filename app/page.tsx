@@ -60,7 +60,7 @@ export default function WelcomePage() {
               disabled={!name}
               className="w-full border-[1px] border-visa-blue text-visa-blue py-4 rounded-sm font-medium hover:bg-gray-50 transition-colors disabled:opacity-30 uppercase tracking-widest text-sm"
             >
-              Kids-Quiz starten (10–16 Jahre)
+              Kids-Quiz starten
             </button>
           </div>
         </div>
