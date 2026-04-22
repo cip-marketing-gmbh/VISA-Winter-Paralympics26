@@ -196,7 +196,7 @@ export const questions: { kids: Question[]; adults: Question[] } = {
       text: "In welcher Klassifizierung startet Niko Kappel?",
       options: ["F41", "T54", "F11"],
       answer: "F41",
-      feedback: "Niko Kappel startet in der Klasse F41. Das „F" steht für „Field" (Wurf- und Sprungdisziplinen), „41" ist die spezifische Klasse für Athlet*innen mit Kleinwuchs. Ziel ist fairer Wettkampf unter vergleichbaren Voraussetzungen.",
+      feedback: "Niko Kappel startet in der Klasse F41. Das 'F' steht fuer 'Field' (Wurf- und Sprungdisziplinen), '41' ist die spezifische Klasse fuer Athlet*innen mit Kleinwuchs. Ziel ist fairer Wettkampf unter vergleichbaren Voraussetzungen.",
     },
     {
       id: 14,
