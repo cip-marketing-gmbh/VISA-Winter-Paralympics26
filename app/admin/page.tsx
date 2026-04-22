@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type Participant = {
   name: string;
@@ -12,6 +12,7 @@ type Participant = {
 export default function AdminPage() {
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [winner, setWinner] = useState<string | null>(null);
+  const [winnerCategory, setWinnerCategory] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [password, setPassword] = useState("");
@@ -44,10 +45,12 @@ export default function AdminPage() {
     }
   };
 
-  const drawWinner = () => {
-    if (participants.length === 0) return;
-    const randomIndex = Math.floor(Math.random() * participants.length);
-    setWinner(participants[randomIndex].name);
+  const drawWinner = (cat: "adults" | "kids") => {
+    const pool = participants.filter(p => p.category === cat);
+    if (pool.length === 0) return;
+    const randomIndex = Math.floor(Math.random() * pool.length);
+    setWinner(pool[randomIndex].name);
+    setWinnerCategory(cat);
   };
 
   const totalKids = participants.filter(p => p.category === "kids").length;
@@ -56,7 +59,6 @@ export default function AdminPage() {
     ? (participants.reduce((sum, p) => sum + (p.score ?? 0), 0) / participants.length).toFixed(1)
     : "–";
 
-  // Login
   if (!authed) {
     return (
       <main className="flex flex-col items-center justify-center min-h-screen bg-white p-8">
@@ -89,7 +91,6 @@ export default function AdminPage() {
   return (
     <main className="min-h-screen bg-white">
 
-      {/* Header */}
       <div className="w-full bg-white py-5 flex justify-center border-b border-gray-100">
         <img src="/logo.png" alt="VISA Logo" className="h-8 object-contain" />
       </div>
@@ -116,19 +117,31 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* Gewinner-Bereich */}
+        {/* Verlosung */}
         <div className="bg-[#1434CB] p-8 mb-8 text-center">
-          <h2 className="text-white text-lg font-light mb-4 uppercase tracking-widest">Verlosung</h2>
-          <button
-            onClick={drawWinner}
-            className="bg-white text-[#1434CB] px-10 py-4 font-bold text-lg hover:bg-gray-100 transition-colors uppercase tracking-widest"
-          >
-            Gewinner auslosen
-          </button>
+          <h2 className="text-white text-lg font-light mb-6 uppercase tracking-widest">Verlosung</h2>
+          <div className="flex gap-4 justify-center">
+            <button
+              onClick={() => drawWinner("adults")}
+              disabled={totalAdults === 0}
+              className="bg-white text-[#1434CB] px-8 py-4 font-bold text-base hover:bg-gray-100 transition-colors uppercase tracking-widest disabled:opacity-30"
+            >
+              Erwachsene auslosen
+            </button>
+            <button
+              onClick={() => drawWinner("kids")}
+              disabled={totalKids === 0}
+              className="bg-white text-[#1434CB] px-8 py-4 font-bold text-base hover:bg-gray-100 transition-colors uppercase tracking-widest disabled:opacity-30"
+            >
+              Kids auslosen
+            </button>
+          </div>
 
           {winner && (
             <div className="mt-8 p-6 bg-white text-[#1434CB]">
-              <p className="text-sm uppercase font-bold text-gray-500 mb-2">Der Gewinner ist:</p>
+              <p className="text-sm uppercase font-bold text-gray-400 mb-1">
+                Gewinner {winnerCategory === "adults" ? "Erwachsene" : "Kids"}:
+              </p>
               <p className="text-4xl font-black">{winner}</p>
             </div>
           )}
