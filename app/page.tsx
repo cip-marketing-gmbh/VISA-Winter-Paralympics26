@@ -24,7 +24,17 @@ export default function WelcomePage() {
         <h1 className="text-4xl font-light text-visa-blue mb-2 tracking-tight">
           Paralympics <span className="font-bold">Quiz</span>
         </h1>
-        <p className="text-gray-500 mb-12 font-light">Mach mit. Teste dein Wissen.</p>
+        <p className="text-gray-500 mb-6 font-light">Mach mit. Teste dein Wissen.</p>
+
+        {/* Motto */}
+        <div className="w-full mb-10 text-center border-t border-b border-gray-100 py-5">
+          <p className="text-visa-blue font-medium text-base leading-snug">
+            Visa feiert Inklusion durch Sport.
+          </p>
+          <p className="text-visa-blue font-light text-base">
+            Zusammen mit den Genossenschaftsbanken!
+          </p>
+        </div>
 
         <div className="w-full space-y-8">
           <div className="relative">
@@ -50,7 +60,7 @@ export default function WelcomePage() {
               disabled={!name}
               className="w-full border-[1px] border-visa-blue text-visa-blue py-4 rounded-sm font-medium hover:bg-gray-50 transition-colors disabled:opacity-30 uppercase tracking-widest text-sm"
             >
-              Kinder-Quiz starten
+              Kids-Quiz starten (10–16 Jahre)
             </button>
           </div>
         </div>
