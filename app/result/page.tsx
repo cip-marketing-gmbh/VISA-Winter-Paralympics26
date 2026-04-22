@@ -16,6 +16,7 @@ export default function ResultPage() {
 
     const participantName = sessionStorage.getItem("participantName");
     const category = sessionStorage.getItem("category");
+    const finalScore = sessionStorage.getItem("finalScore");
 
     if (!participantName) {
       router.push("/");
@@ -27,7 +28,11 @@ export default function ResultPage() {
     fetch("/api/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: participantName, category }),
+      body: JSON.stringify({
+        name: participantName,
+        category,
+        score: finalScore ? parseInt(finalScore) : 0,
+      }),
     }).finally(() => setLoading(false));
   }, [router]);
 
@@ -53,7 +58,6 @@ export default function ResultPage() {
           Danke für deine Teilnahme am Paralympics-Quiz.
         </p>
 
-        {/* Verlosung – kein Rahmen */}
         <div className="w-full p-6 mb-8">
           <p className="text-black font-bold text-xl mb-2">
             Du nimmst jetzt an der Verlosung teil!

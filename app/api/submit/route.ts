@@ -3,16 +3,13 @@ import { NextResponse } from "next/server";
 
 const VALID_CATEGORIES = ["kids", "adults"] as const;
 const MAX_NAME_LENGTH = 100;
-const RATE_LIMIT_WINDOW_SECONDS = 60 * 60; // 1 Stunde
+const RATE_LIMIT_WINDOW_SECONDS = 60 * 60;
 const MAX_SUBMISSIONS_PER_IP = 3;
 
 export async function POST(request: Request) {
-  // IP für Rate Limiting auslesen
   const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    "unknown";
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
 
-  // --- Rate Limiting ---
   const rateLimitKey = `ratelimit:submit:${ip}`;
   const submissions = await kv.incr(rateLimitKey);
   if (submissions === 1) {
@@ -25,7 +22,6 @@ export async function POST(request: Request) {
     );
   }
 
-  // --- Input parsen & validieren ---
   let body: unknown;
   try {
     body = await request.json();
@@ -33,7 +29,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { name, category } = body as Record<string, unknown>;
+  const { name, category, score } = body as Record<string, unknown>;
 
   if (!name || typeof name !== "string" || name.trim().length === 0) {
     return NextResponse.json({ error: "Name is required" }, { status: 400 });
@@ -55,7 +51,6 @@ export async function POST(request: Request) {
 
   const cleanName = name.trim();
 
-  // --- Doppelten Eintrag verhindern ---
   const existingKey = `participant:${cleanName.toLowerCase()}`;
   const alreadyExists = await kv.exists(existingKey);
   if (alreadyExists) {
@@ -63,12 +58,12 @@ export async function POST(request: Request) {
   }
   await kv.set(existingKey, 1, { ex: 60 * 60 * 24 });
 
-  // --- Eintrag speichern ---
   await kv.lpush(
     "participants",
     JSON.stringify({
       name: cleanName,
       category,
+      score: typeof score === "number" ? score : 0,
       date: new Date().toISOString(),
     })
   );

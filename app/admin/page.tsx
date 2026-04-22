@@ -2,10 +2,15 @@
 
 import { useEffect, useState } from "react";
 
+type Participant = {
+  name: string;
+  category: string;
+  score?: number;
+  date?: string;
+};
+
 export default function AdminPage() {
-  const [participants, setParticipants] = useState<
-    { name: string; category: string; date?: string }[]
-  >([]);
+  const [participants, setParticipants] = useState<Participant[]>([]);
   const [winner, setWinner] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -45,11 +50,20 @@ export default function AdminPage() {
     setWinner(participants[randomIndex].name);
   };
 
-  // Login-Formular
+  const totalKids = participants.filter(p => p.category === "kids").length;
+  const totalAdults = participants.filter(p => p.category === "adults").length;
+  const avgScore = participants.length > 0
+    ? (participants.reduce((sum, p) => sum + (p.score ?? 0), 0) / participants.length).toFixed(1)
+    : "–";
+
+  // Login
   if (!authed) {
     return (
       <main className="flex flex-col items-center justify-center min-h-screen bg-white p-8">
-        <h1 className="text-2xl font-bold text-visa-blue mb-8">Admin-Login</h1>
+        <div className="w-full flex justify-center mb-10">
+          <img src="/logo.png" alt="VISA Logo" className="h-10 object-contain" />
+        </div>
+        <h1 className="text-2xl font-bold text-black mb-8">Admin-Login</h1>
         <div className="w-full max-w-sm space-y-4">
           <input
             type="password"
@@ -57,13 +71,13 @@ export default function AdminPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && loadData(password)}
-            className="w-full border border-gray-300 rounded px-4 py-3 outline-none focus:border-visa-blue"
+            className="w-full border-2 border-gray-300 px-4 py-3 outline-none focus:border-[#1434CB] text-black"
           />
           {error && <p className="text-red-600 text-sm">{error}</p>}
           <button
             onClick={() => loadData(password)}
             disabled={loading || !password}
-            className="w-full bg-visa-blue text-white py-3 rounded font-medium hover:bg-[#040a2e] disabled:opacity-30"
+            className="w-full bg-[#1434CB] text-white py-4 font-medium hover:bg-[#0f27a8] disabled:opacity-30 uppercase tracking-widest"
           >
             {loading ? "Laden..." : "Einloggen"}
           </button>
@@ -73,52 +87,95 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="p-10 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold text-visa-blue mb-8">Admin-Dashboard</h1>
+    <main className="min-h-screen bg-white">
 
-      <div className="bg-visa-blue text-white p-8 rounded-2xl mb-10 text-center">
-        <h2 className="text-xl mb-4">Teilnehmer gesamt: {participants.length}</h2>
-        <button
-          onClick={drawWinner}
-          className="bg-visa-gold text-visa-blue px-10 py-4 rounded-full font-bold text-xl hover:scale-105 transition-transform"
-        >
-          Gewinner auslosen 🎲
-        </button>
+      {/* Header */}
+      <div className="w-full bg-white py-5 flex justify-center border-b border-gray-100">
+        <img src="/logo.png" alt="VISA Logo" className="h-8 object-contain" />
+      </div>
 
-        {winner && (
-          <div className="mt-8 p-6 bg-white text-visa-blue rounded-xl animate-bounce">
-            <p className="text-sm uppercase font-bold text-gray-500">Der Gewinner ist:</p>
-            <p className="text-4xl font-black">{winner}</p>
+      <div className="max-w-4xl mx-auto px-8 py-8">
+
+        <h1 className="text-3xl font-bold text-black mb-8">
+          Paralympics Quiz – Admin Dashboard
+        </h1>
+
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-4 mb-8">
+          <div className="border-2 border-[#1434CB] p-5 text-center">
+            <p className="text-4xl font-black text-[#1434CB]">{participants.length}</p>
+            <p className="text-sm text-gray-600 uppercase tracking-widest mt-1">Teilnehmer</p>
           </div>
-        )}
-      </div>
+          <div className="border-2 border-[#1434CB] p-5 text-center">
+            <p className="text-4xl font-black text-[#1434CB]">{avgScore}</p>
+            <p className="text-sm text-gray-600 uppercase tracking-widest mt-1">Ø Richtige</p>
+          </div>
+          <div className="border-2 border-[#1434CB] p-5 text-center">
+            <p className="text-2xl font-black text-[#1434CB]">{totalAdults} / {totalKids}</p>
+            <p className="text-sm text-gray-600 uppercase tracking-widest mt-1">Erw. / Kids</p>
+          </div>
+        </div>
 
-      <div className="border rounded-xl overflow-hidden">
-        <table className="w-full text-left">
-          <thead className="bg-gray-50 border-b">
-            <tr>
-              <th className="p-4">Name</th>
-              <th className="p-4">Kategorie</th>
-              <th className="p-4">Datum</th>
-            </tr>
-          </thead>
-          <tbody>
-            {participants.map((p, i) => (
-              <tr key={i} className="border-b last:border-0">
-                <td className="p-4 font-medium">{p.name}</td>
-                <td className="p-4 text-gray-600 uppercase text-xs">{p.category}</td>
-                <td className="p-4 text-gray-400 text-xs">
-                  {p.date ? new Date(p.date).toLocaleString("de-DE") : "–"}
-                </td>
+        {/* Gewinner-Bereich */}
+        <div className="bg-[#1434CB] p-8 mb-8 text-center">
+          <h2 className="text-white text-lg font-light mb-4 uppercase tracking-widest">Verlosung</h2>
+          <button
+            onClick={drawWinner}
+            className="bg-white text-[#1434CB] px-10 py-4 font-bold text-lg hover:bg-gray-100 transition-colors uppercase tracking-widest"
+          >
+            Gewinner auslosen
+          </button>
+
+          {winner && (
+            <div className="mt-8 p-6 bg-white text-[#1434CB]">
+              <p className="text-sm uppercase font-bold text-gray-500 mb-2">Der Gewinner ist:</p>
+              <p className="text-4xl font-black">{winner}</p>
+            </div>
+          )}
+        </div>
+
+        {/* Tabelle */}
+        <div className="border border-gray-200 overflow-hidden mb-4">
+          <table className="w-full text-left">
+            <thead className="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th className="p-4 text-sm uppercase tracking-widest text-gray-500">Name</th>
+                <th className="p-4 text-sm uppercase tracking-widest text-gray-500">Kategorie</th>
+                <th className="p-4 text-sm uppercase tracking-widest text-gray-500">Richtige</th>
+                <th className="p-4 text-sm uppercase tracking-widest text-gray-500">Datum</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {participants.map((p, i) => (
+                <tr key={i} className="border-b border-gray-100 last:border-0 hover:bg-gray-50">
+                  <td className="p-4 font-medium text-black">{p.name}</td>
+                  <td className="p-4 text-gray-500 uppercase text-xs">{p.category}</td>
+                  <td className="p-4 font-bold text-[#1434CB]">
+                    {p.score !== undefined ? p.score : "–"}
+                  </td>
+                  <td className="p-4 text-gray-400 text-xs">
+                    {p.date ? new Date(p.date).toLocaleString("de-DE") : "–"}
+                  </td>
+                </tr>
+              ))}
+              {participants.length === 0 && (
+                <tr>
+                  <td colSpan={4} className="p-8 text-center text-gray-400">Noch keine Teilnehmer.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        <button
+          onClick={() => loadData(password)}
+          className="text-sm text-[#1434CB] underline"
+        >
+          ↻ Aktualisieren
+        </button>
       </div>
 
-      <button onClick={() => loadData(password)} className="mt-6 text-sm text-visa-blue underline">
-        ↻ Aktualisieren
-      </button>
+      <div className="w-full bg-[#1434CB] py-4 mt-8" />
     </main>
   );
 }
