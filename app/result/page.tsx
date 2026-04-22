@@ -34,12 +34,10 @@ export default function ResultPage() {
   return (
     <main className="flex flex-col h-screen bg-white overflow-hidden">
 
-      {/* Header – same as start page */}
       <div className="w-full bg-white py-6 flex justify-center border-b border-gray-100 shrink-0">
         <img src="/logo.png" alt="VISA Logo" className="h-10 object-contain" />
       </div>
 
-      {/* Content */}
       <div className="flex-1 flex flex-col items-center justify-center w-full max-w-lg mx-auto px-8 text-center">
 
         <div className="w-20 h-20 bg-[#1434CB] rounded-full flex items-center justify-center mb-8 animate-bounce">
@@ -51,23 +49,13 @@ export default function ResultPage() {
         <h1 className="text-4xl font-bold text-black mb-3">
           Toll gemacht, {name}!
         </h1>
-        <p className="text-xl text-gray-600 mb-8 font-light">
+        <p className="text-xl text-gray-600 mb-10 font-light">
           Danke für deine Teilnahme am Paralympics-Quiz.
         </p>
 
-        {/* Motto */}
-        <div className="w-full text-center border-t border-b border-gray-200 py-5 mb-8">
-          <p className="font-semibold text-black text-lg leading-snug">
-            Visa feiert Inklusion durch Sport.
-          </p>
-          <p className="font-light text-black text-lg">
-            Zusammen mit den Genossenschaftsbanken!
-          </p>
-        </div>
-
-        {/* Verlosung */}
-        <div className="w-full border-2 border-[#1434CB] p-6 mb-8">
-          <p className="text-black font-bold text-xl mb-1">
+        {/* Verlosung – kein Rahmen */}
+        <div className="w-full p-6 mb-8">
+          <p className="text-black font-bold text-xl mb-2">
             Du nimmst jetzt an der Verlosung teil!
           </p>
           <p className="text-black text-base font-light">
@@ -86,7 +74,6 @@ export default function ResultPage() {
         </button>
       </div>
 
-      {/* Footer bar */}
       <div className="w-full bg-[#1434CB] py-4 shrink-0" />
     </main>
   );

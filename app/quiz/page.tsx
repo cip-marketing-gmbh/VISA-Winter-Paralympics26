@@ -70,9 +70,9 @@ export default function QuizPage() {
         <img src="/logo.png" alt="VISA" className="h-8 object-contain" />
       </div>
 
-      {/* Scrollable content area */}
+      {/* Scrollable content – mit pt-10 etwas nach unten */}
       <div className="flex-1 overflow-y-auto">
-        <div className="flex flex-col items-center w-full max-w-2xl mx-auto px-6 py-6">
+        <div className="flex flex-col items-center w-full max-w-2xl mx-auto px-6 pt-10 pb-6">
 
           {/* Progress */}
           <div className="w-full mb-8">
@@ -144,7 +144,7 @@ export default function QuizPage() {
             </div>
           )}
 
-          {/* Action buttons */}
+          {/* Button */}
           <div className="mt-6 w-full pb-4">
             {!submitted && (
               <button
@@ -167,7 +167,6 @@ export default function QuizPage() {
         </div>
       </div>
 
-      {/* Footer bar */}
       <div className="w-full bg-[#1434CB] py-4 shrink-0" />
     </main>
   );

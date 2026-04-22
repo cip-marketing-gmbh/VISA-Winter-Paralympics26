@@ -17,21 +17,21 @@ export default function WelcomePage() {
   return (
     <main className="flex flex-col h-screen bg-white overflow-hidden">
 
-      {/* Header – white background, blue VISA logo */}
-      <div className="w-full bg-white py-6 flex justify-center border-b border-gray-100">
+      {/* Header */}
+      <div className="w-full bg-white py-6 flex justify-center border-b border-gray-100 shrink-0">
         <img src="/logo.png" alt="VISA Logo" className="h-10 object-contain" />
       </div>
 
-      {/* Content */}
-      <div className="flex-1 flex flex-col items-center justify-center w-full max-w-lg mx-auto px-8">
+      {/* Content – etwas höher positioniert mit justify-start + pt */}
+      <div className="flex-1 flex flex-col items-center justify-start pt-10 w-full max-w-lg mx-auto px-8">
 
         <h1 className="text-5xl font-light text-black mb-2 tracking-tight text-center">
           Paralympics <span className="font-bold">Quiz</span>
         </h1>
         <p className="text-gray-600 mb-8 font-light text-lg text-center">Mach mit. Teste dein Wissen.</p>
 
-        {/* Motto */}
-        <div className="w-full text-center border-t border-b border-gray-200 py-5 mb-10">
+        {/* Motto – keine Trennstriche */}
+        <div className="w-full text-center py-5 mb-10">
           <p className="font-semibold text-black text-lg leading-snug">
             Visa feiert Inklusion durch Sport.
           </p>
@@ -68,8 +68,7 @@ export default function WelcomePage() {
         </div>
       </div>
 
-      {/* Footer bar */}
-      <div className="w-full bg-[#1434CB] py-4" />
+      <div className="w-full bg-[#1434CB] py-4 shrink-0" />
     </main>
   );
 }
