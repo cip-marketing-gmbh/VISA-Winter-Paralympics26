@@ -22,8 +22,9 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-title" content="VISA Quiz" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
       </head>
-      <body className="antialiased font-sans">{children}</body>
+      <body className="antialiased font-sans overflow-hidden">{children}</body>
     </html>
   );
 }

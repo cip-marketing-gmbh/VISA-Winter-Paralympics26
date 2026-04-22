@@ -2,28 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --visa-blue: #061354;
+html, body {
+  height: 100%;
+  overflow: hidden;
 }
 
-body {
-  background-color: #ffffff;
-  color: #2c2c2c;
-  -webkit-font-smoothing: antialiased;
+#__next, main {
+  height: 100%;
 }
 
-/* Falls du die Styles für Visa-Buttons schon hattest, füge sie hier an: */
-.visa-btn {
-  @apply px-8 py-4 transition-all duration-200 active:scale-[0.98] disabled:cursor-not-allowed;
-}
-
-input:focus::placeholder {
-  color: transparent;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
 .animate-fade-in {
-  animation: fadeIn 0.3s ease-out forwards;
+  animation: fade-in 0.3s ease-out forwards;
 }
