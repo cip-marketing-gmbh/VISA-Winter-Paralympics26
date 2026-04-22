@@ -11,7 +11,7 @@ type Participant = {
 
 export default function AdminPage() {
   const [participants, setParticipants] = useState<Participant[]>([]);
-  const [winner, setWinner] = useState<string | null>(null);
+  const [winner, setWinner] = useState<Participant | null>(null);
   const [winnerCategory, setWinnerCategory] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -49,7 +49,7 @@ export default function AdminPage() {
     const pool = participants.filter(p => p.category === cat);
     if (pool.length === 0) return;
     const randomIndex = Math.floor(Math.random() * pool.length);
-    setWinner(pool[randomIndex].name);
+    setWinner(pool[randomIndex]);
     setWinnerCategory(cat);
   };
 
@@ -142,7 +142,12 @@ export default function AdminPage() {
               <p className="text-sm uppercase font-bold text-gray-400 mb-1">
                 Gewinner {winnerCategory === "adults" ? "Erwachsene" : "Kids"}:
               </p>
-              <p className="text-4xl font-black">{winner}</p>
+              <p className="text-4xl font-black">{winner.name}</p>
+              {winner.date && (
+                <p className="text-sm text-gray-400 mt-2">
+                  Teilgenommen: {new Date(winner.date).toLocaleString("de-DE")}
+                </p>
+              )}
             </div>
           )}
         </div>
