@@ -2,13 +2,15 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    "./app/**/*.{js,ts,jsx,tsx,mdx}", // WICHTIG: Er scannt alles im app-Ordner
-    "./components/**/*.{js,ts,jsx,tsx,mdx}", // Und hier, falls wir später Komponenten nutzen
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
-        "visa-blue": "#061354",
+        "visa-blue": "#1A1F71",
+        "visa-gold": "#F7B600",
       },
     },
   },

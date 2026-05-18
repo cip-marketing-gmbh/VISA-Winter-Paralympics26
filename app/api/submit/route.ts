@@ -29,28 +29,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { name, category, score } = body as Record<string, unknown>;
+  const { name, category } = body as Record<string, unknown>;
 
   if (!name || typeof name !== "string" || name.trim().length === 0) {
     return NextResponse.json({ error: "Name is required" }, { status: 400 });
   }
-
   if (name.trim().length > MAX_NAME_LENGTH) {
-    return NextResponse.json(
-      { error: `Name must be ${MAX_NAME_LENGTH} characters or fewer` },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: `Name must be ${MAX_NAME_LENGTH} characters or fewer` }, { status: 400 });
   }
-
   if (!VALID_CATEGORIES.includes(category as (typeof VALID_CATEGORIES)[number])) {
-    return NextResponse.json(
-      { error: "Invalid category. Must be 'kids' or 'adults'." },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Invalid category" }, { status: 400 });
   }
 
   const cleanName = name.trim();
-
   const existingKey = `participant:${cleanName.toLowerCase()}`;
   const alreadyExists = await kv.exists(existingKey);
   if (alreadyExists) {
@@ -60,12 +51,7 @@ export async function POST(request: Request) {
 
   await kv.lpush(
     "participants",
-    JSON.stringify({
-      name: cleanName,
-      category,
-      score: typeof score === "number" ? score : 0,
-      date: new Date().toISOString(),
-    })
+    JSON.stringify({ name: cleanName, category, date: new Date().toISOString() })
   );
 
   return NextResponse.json({ success: true });
