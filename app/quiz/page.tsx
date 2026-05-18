@@ -9,7 +9,8 @@ export default function QuizPage() {
   const [category, setCategory] = useState<"kids" | "adults" | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
+  const [submitted, setSubmitted] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -25,19 +26,34 @@ export default function QuizPage() {
 
   const currentQuestions = questions[category];
   const currentQuestion = currentQuestions[currentIndex];
-  const isLastQuestion = currentIndex === currentQuestions.length - 1;
+  const isMulti = currentQuestion.multiSelect === true;
+  const correctAnswers = currentQuestion.answer.split(",");
 
-  const handleAnswerClick = (option: string) => {
-    if (selectedAnswer) return;
-    const correct = option === currentQuestion.answer;
-    setSelectedAnswer(option);
+  const handleOptionClick = (option: string) => {
+    if (submitted) return;
+    if (isMulti) {
+      setSelectedAnswers(prev =>
+        prev.includes(option) ? prev.filter(a => a !== option) : [...prev, option]
+      );
+    } else {
+      setSelectedAnswers([option]);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (selectedAnswers.length === 0) return;
+    const correct =
+      correctAnswers.length === selectedAnswers.length &&
+      correctAnswers.every(a => selectedAnswers.includes(a));
     setIsCorrect(correct);
+    setSubmitted(true);
     if (correct) setScore(prev => prev + 1);
   };
 
   const handleNext = () => {
-    if (!isLastQuestion) {
-      setSelectedAnswer(null);
+    if (currentIndex < currentQuestions.length - 1) {
+      setSelectedAnswers([]);
+      setSubmitted(false);
       setIsCorrect(null);
       setCurrentIndex(prev => prev + 1);
     } else {
@@ -47,73 +63,111 @@ export default function QuizPage() {
   };
 
   return (
-    <main className="flex flex-col items-center min-h-screen bg-white">
-      <div className="w-full flex justify-center py-6 border-b-[1px] border-gray-100">
+    <main className="flex flex-col h-screen bg-white overflow-hidden">
+
+      {/* Header */}
+      <div className="w-full bg-white py-5 flex justify-center border-b border-gray-100 shrink-0">
         <img src="/logo.png" alt="VISA" className="h-8 object-contain" />
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center w-full max-w-2xl p-6">
-        <div className="w-full mb-12">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-2 text-center">
-            Frage {currentIndex + 1} von {currentQuestions.length}
-          </p>
-          <div className="w-full bg-gray-100 h-[2px]">
-            <div
-              className="bg-visa-blue h-full transition-all duration-500"
-              style={{ width: `${((currentIndex + 1) / currentQuestions.length) * 100}%` }}
-            />
+      {/* Scrollable content – mit pt-10 etwas nach unten */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="flex flex-col items-center w-full max-w-2xl mx-auto px-6 pt-10 pb-6">
+
+          {/* Progress */}
+          <div className="w-full mb-8">
+            <p className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-3 text-center font-medium">
+              Frage {currentIndex + 1} von {currentQuestions.length}
+            </p>
+            <div className="w-full bg-gray-200 h-[3px]">
+              <div
+                className="bg-[#1434CB] h-full transition-all duration-500"
+                style={{ width: `${((currentIndex + 1) / currentQuestions.length) * 100}%` }}
+              />
+            </div>
           </div>
-        </div>
 
-        <h2 className="text-2xl font-light text-visa-blue mb-10 text-center leading-snug">
-          {currentQuestion.text}
-        </h2>
-
-        <div className="w-full space-y-3">
-          {currentQuestion.options.map((option) => {
-            const isThisCorrect = option === currentQuestion.answer;
-            const isThisSelected = option === selectedAnswer;
-
-            let buttonClass = "border-gray-200 text-visa-blue";
-            if (selectedAnswer) {
-              if (isThisCorrect) buttonClass = "border-green-500 bg-green-50 text-green-700 font-medium";
-              else if (isThisSelected) buttonClass = "border-red-400 bg-red-50 text-red-700";
-              else buttonClass = "border-gray-100 text-gray-300 opacity-50";
-            }
-
-            return (
-              <button
-                key={option}
-                onClick={() => handleAnswerClick(option)}
-                disabled={!!selectedAnswer}
-                className={`w-full p-5 text-left border-[1px] rounded-sm transition-all font-light flex justify-between items-center ${buttonClass}`}
-              >
-                <span>{option}</span>
-                {selectedAnswer && isThisCorrect && <span>✓</span>}
-                {selectedAnswer && isThisSelected && !isThisCorrect && <span>✕</span>}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Erklärung bei letzter Champion-Quiz-Frage */}
-        {selectedAnswer && isLastQuestion && currentQuestion.explanation && (
-          <div className="mt-6 w-full bg-visa-blue text-white rounded-sm px-6 py-4 text-center text-sm font-light">
-            {currentQuestion.explanation}
-          </div>
-        )}
-
-        <div className="h-24 mt-6 w-full flex flex-col items-center justify-center">
-          {selectedAnswer && (
-            <button
-              onClick={handleNext}
-              className="bg-visa-blue text-white px-12 py-3 rounded-sm uppercase tracking-widest text-sm hover:bg-[#040a2e]"
-            >
-              {isLastQuestion ? "Ergebnis anzeigen" : "Nächste Frage"}
-            </button>
+          {/* Question */}
+          <h2 className="text-2xl font-semibold text-black mb-2 text-center leading-snug w-full">
+            {currentQuestion.text}
+          </h2>
+          {isMulti && (
+            <p className="text-sm text-gray-500 uppercase tracking-widest mb-6">Mehrere Antworten möglich</p>
           )}
+          {!isMulti && <div className="mb-6" />}
+
+          {/* Options */}
+          <div className="w-full space-y-3">
+            {currentQuestion.options.map((option) => {
+              const isThisCorrect = correctAnswers.includes(option);
+              const isThisSelected = selectedAnswers.includes(option);
+
+              let buttonClass = "";
+              if (!submitted) {
+                buttonClass = isThisSelected
+                  ? "border-2 border-[#1434CB] bg-[#1434CB] text-white font-medium"
+                  : "border-2 border-black text-black hover:bg-gray-50";
+              } else {
+                if (isThisCorrect) {
+                  buttonClass = "border-2 border-green-600 bg-green-50 text-green-800 font-semibold";
+                } else if (isThisSelected && !isThisCorrect) {
+                  buttonClass = "border-2 border-red-500 bg-red-50 text-red-700 font-medium";
+                } else {
+                  buttonClass = "border-2 border-black text-black";
+                }
+              }
+
+              return (
+                <button
+                  key={option}
+                  onClick={() => handleOptionClick(option)}
+                  disabled={submitted}
+                  className={`w-full p-5 text-left transition-all font-light flex justify-between items-center text-lg ${buttonClass}`}
+                >
+                  <span>{option}</span>
+                  {submitted && isThisCorrect && <span className="text-green-600 font-bold text-xl">✓</span>}
+                  {submitted && isThisSelected && !isThisCorrect && <span className="text-red-500 font-bold text-xl">✕</span>}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Feedback */}
+          {submitted && (
+            <div className={`w-full mt-5 p-5 border-l-4 animate-fade-in ${isCorrect ? "border-green-600 bg-green-50" : "border-red-500 bg-red-50"}`}>
+              <p className={`text-sm uppercase tracking-widest font-bold mb-2 ${isCorrect ? "text-green-700" : "text-red-600"}`}>
+                {isCorrect ? "Richtig!" : "Leider falsch."}
+              </p>
+              <p className="text-base text-gray-800 font-light leading-relaxed">
+                {currentQuestion.feedback}
+              </p>
+            </div>
+          )}
+
+          {/* Button */}
+          <div className="mt-6 w-full pb-4">
+            {!submitted && (
+              <button
+                onClick={handleSubmit}
+                disabled={selectedAnswers.length === 0}
+                className="w-full bg-[#1434CB] text-white py-5 uppercase tracking-widest text-base font-medium hover:bg-[#0f27a8] disabled:opacity-30 transition-all"
+              >
+                Antwort bestätigen
+              </button>
+            )}
+            {submitted && (
+              <button
+                onClick={handleNext}
+                className="w-full bg-[#1434CB] text-white py-5 uppercase tracking-widest text-base font-medium animate-fade-in hover:bg-[#0f27a8] transition-all"
+              >
+                {currentIndex < currentQuestions.length - 1 ? "Nächste Frage" : "Ergebnis anzeigen"}
+              </button>
+            )}
+          </div>
         </div>
       </div>
+
+      <div className="w-full bg-[#1434CB] py-4 shrink-0" />
     </main>
   );
 }

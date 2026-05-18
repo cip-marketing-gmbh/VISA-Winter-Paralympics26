@@ -11,6 +11,7 @@ export function middleware(req: NextRequest) {
     if (!secret) {
       return new NextResponse("Admin secret not configured", { status: 500 });
     }
+
     if (authHeader !== `Bearer ${secret}`) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
