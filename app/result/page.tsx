@@ -58,15 +58,6 @@ export default function ResultPage() {
           Danke für deine Teilnahme am Paralympics-Quiz.
         </p>
 
-        <div className="w-full p-6 mb-8">
-          <p className="text-black font-bold text-xl mb-2">
-            Du nimmst jetzt an der Verlosung teil!
-          </p>
-          <p className="text-black text-base font-light">
-            Am Ende der Veranstaltung wird ein zufälliger Gewinner ausgelost.
-          </p>
-        </div>
-
         <button
           onClick={() => {
             sessionStorage.clear();

@@ -207,7 +207,7 @@ export const questions: { kids: Question[]; adults: Question[] } = {
         "Teilnahme bis zu Bronzemedaille",
       ],
       answer: "Mehrere Goldmedaillen",
-      feedback: "Anna-Lena Forster hat mehrere Goldmedaillen gewonnen und gehört zur Weltspitze.",
+      feedback: "Anna-Lena Forster hat mehrere Goldmedaillen gewonnen und gehört zur Weltspitze. Sie holte insgesamt 12 paralympische Medaillen – 6x Gold, 5x Silber, 1x Bronze.",
     },
   ],
 };
