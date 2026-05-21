@@ -55,7 +55,7 @@ export default function WelcomePage() {
               disabled={!firstName.trim()}
               className="w-full bg-[#1434CB] text-white py-5 font-medium hover:bg-[#0f27a8] transition-colors disabled:opacity-30 uppercase tracking-widest text-base"
             >
-              Warm-up Quiz starten
+              Einsteiger Quiz starten
             </button>
             <button
               onClick={() => startQuiz("adults")}
