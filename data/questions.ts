@@ -47,34 +47,27 @@ export const questions: { kids: Question[]; adults: Question[] } = {
     },
     {
       id: 6,
-      text: "Was ist das Ziel von Klassifizierung?",
-      options: ["Fairness im Wettbewerb", "Schnellere Spiele", "Weniger Teilnehmer"],
-      answer: "Fairness im Wettbewerb",
-      feedback: "Alle sollen unter vergleichbaren Bedingungen antreten.",
-    },
-    {
-      id: 7,
       text: "Welche Aussage stimmt?",
       options: ["Training ist entscheidend für Erfolg", "Glück ist wichtiger", "Regeln sind egal"],
       answer: "Training ist entscheidend für Erfolg",
       feedback: "Training ist die Grundlage im Sport.",
     },
     {
-      id: 8,
+      id: 7,
       text: "Welche Sportart gibt es nur bei den Paralympics?",
       options: ["Boccia", "Fußball", "Tennis"],
       answer: "Boccia",
       feedback: "Boccia ist eine spezielle paralympische Sportart.",
     },
     {
-      id: 9,
+      id: 8,
       text: "Wann gewann Niko Kappel Paralympics-Gold?",
       options: ["2012", "2016", "2020"],
       answer: "2016",
       feedback: "2016 gewann er Gold bei den Paralympics.",
     },
     {
-      id: 10,
+      id: 9,
       text: "Wie erfolgreich ist Anna-Lena Forster?",
       options: ["Mehrere Medaillen bei Paralympics", "Nur Teilnahme", "Keine Erfolge"],
       answer: "Mehrere Medaillen bei Paralympics",
@@ -95,17 +88,6 @@ export const questions: { kids: Question[]; adults: Question[] } = {
     },
     {
       id: 2,
-      text: "Welche Aussage zur Klassifizierung ist korrekt?",
-      options: [
-        "Sie basiert nur auf der medizinischen Diagnose",
-        "Sie berücksichtigt sportartspezifische Anforderungen",
-        "Sie wird einmal festgelegt und bleibt immer gleich",
-      ],
-      answer: "Sie berücksichtigt sportartspezifische Anforderungen",
-      feedback: "Die Klassifizierung berücksichtigt die Anforderungen der jeweiligen Sportart und kann sich auch verändern.",
-    },
-    {
-      id: 3,
       text: "Welche dieser Sportarten sind paralympisch? (Mehrfachauswahl)",
       options: ["Goalball", "Boccia", "Rollstuhlrugby", "Squash"],
       answer: "Goalball,Boccia,Rollstuhlrugby",
@@ -113,7 +95,7 @@ export const questions: { kids: Question[]; adults: Question[] } = {
       multiSelect: true,
     },
     {
-      id: 4,
+      id: 3,
       text: "Was ist das Besondere an Goalball?",
       options: [
         "Der Ball ist hörbar und alle tragen Augenbinden",
@@ -124,28 +106,28 @@ export const questions: { kids: Question[]; adults: Question[] } = {
       feedback: "Alle Spieler*innen tragen Augenbinden – so sind die Bedingungen gleich.",
     },
     {
-      id: 5,
+      id: 4,
       text: "In welcher Sportart gibt es keine Entsprechung im olympischen Programm?",
       options: ["Boccia", "Leichtathletik", "Schwimmen"],
       answer: "Boccia",
       feedback: "Boccia ist eine paralympische Sportart ohne olympisches Pendant.",
     },
     {
-      id: 6,
+      id: 5,
       text: "Wie schnell können Rennrollstühle im Wettkampf erreichen?",
       options: ["ca. 20 km/h", "ca. 30 km/h", "über 35 km/h"],
       answer: "über 35 km/h",
       feedback: "Top-Athlet*innen erreichen im Rennrollstuhl Geschwindigkeiten von über 35 km/h.",
     },
     {
-      id: 7,
+      id: 6,
       text: "Was ist das Hauptziel der Klassifizierung?",
       options: ["Spannung erhöhen", "Fairen Wettbewerb ermöglichen", "Wettkämpfe verkürzen"],
       answer: "Fairen Wettbewerb ermöglichen",
       feedback: "Ziel ist es, möglichst faire Bedingungen im Wettbewerb zu schaffen.",
     },
     {
-      id: 8,
+      id: 7,
       text: "Welche Aussage beschreibt paralympischen Spitzensport am besten?",
       options: [
         "Hochleistungssport auf internationalem Niveau",
@@ -156,14 +138,14 @@ export const questions: { kids: Question[]; adults: Question[] } = {
       feedback: "Paralympischer Sport ist internationaler Hochleistungssport.",
     },
     {
-      id: 9,
+      id: 8,
       text: "In welcher Sportart spielen ausschließlich sehbehinderte Athlet*innen?",
       options: ["Goalball", "Rollstuhlbasketball", "Tischtennis"],
       answer: "Goalball",
       feedback: "Goalball ist speziell für blinde und sehbehinderte Athlet*innen entwickelt.",
     },
     {
-      id: 10,
+      id: 9,
       text: "Welche Rolle spielen Hilfsmittel im paralympischen Sport?",
       options: [
         "Sie gleichen funktionelle Unterschiede aus und sind Teil der Leistung",
@@ -174,14 +156,14 @@ export const questions: { kids: Question[]; adults: Question[] } = {
       feedback: "Hilfsmittel wie Sportrollstühle oder Prothesen sind integraler Bestandteil des Sports.",
     },
     {
-      id: 11,
+      id: 10,
       text: "Wie viele Sportarten gibt es ungefähr bei den Sommer-Paralympics?",
       options: ["ca. 10", "ca. 22", "über 40"],
       answer: "ca. 22",
       feedback: "Bei den Sommer-Paralympics gibt es über 20 Sportarten.",
     },
     {
-      id: 12,
+      id: 11,
       text: "Welche Aussage trifft auf paralympische Wettkämpfe zu?",
       options: [
         "Sie sind national organisiert",
@@ -192,14 +174,14 @@ export const questions: { kids: Question[]; adults: Question[] } = {
       feedback: "Paralympische Wettkämpfe sind international standardisiert.",
     },
     {
-      id: 13,
+      id: 12,
       text: "In welcher Klassifizierung startet Niko Kappel?",
       options: ["F41", "T54", "F11"],
       answer: "F41",
       feedback: "Niko Kappel startet in der Klasse F41. Die Klassifizierung „F41“ bedeutet, dass Niko Kappel im Kugelstoßen in einer Klasse für Athlet*innen mit Kleinwuchs startet. F steht für „Field“ (also Wurf- und Sprungdisziplinen). 41 ist die spezifische Klasse innerhalb dieser Disziplin. Ziel der Klassifizierung ist es, dass Athlet*innen mit ähnlichen körperlichen Voraussetzungen gegeneinander antreten und der Wettbewerb fair ist.",
     },
     {
-      id: 14,
+      id: 13,
       text: "Wie erfolgreich ist Anna-Lena Forster bei Paralympics?",
       options: [
         "Mehrere Goldmedaillen",
